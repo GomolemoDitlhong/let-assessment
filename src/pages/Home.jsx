@@ -1,5 +1,5 @@
 import React from 'react'
-import Articles from '../Articles';
+import Articles from '../components/Articles';
 import axios from 'axios';
 const Home = (props) => {
   return (

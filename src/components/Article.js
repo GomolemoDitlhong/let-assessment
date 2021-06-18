@@ -5,51 +5,119 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
-import ImageIcon from "@material-ui/icons/Image";
-import WorkIcon from "@material-ui/icons/Work";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import IconButton from "@material-ui/core/IconButton";
+import { grey } from "@material-ui/core/colors";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import EventIcon from "@material-ui/icons/Event";
 import { makeStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router-dom";
 
-const useStyles = makeStyles({
-  card: {
-    marginBottom: "10px",
-    boxShadow: "0 5px 8px 0 rgba(0, 0, 0, 0.3)",
-    backgroundColor: "#fafafa",
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    "& > *": {
+      margin: theme.spacing(1),
+    },
   },
-  media: {
-    height: 300,
+  grey: {
+    color: "transparent",
+    backgroundColor: grey[500],
   },
-});
+  dateWrapper: {
+    display: "inline-flex",
+    flexDirection: "row",
+    height: "20px",
+    alignItems: "flex-end",
+  },
+  secondaryWrapper: {
+    maxWidth: "250px",
+  },
+  dateIcon: {
+    alignSelf: "center",
+    flexGrow: "1",
+    marginRight: "5px",
+  },
+  dateText: {
+    alignSelf: "flex-end",
+  },
 
-const Article = ({ article }) => {
+  grid: {
+    display: "flex",
+    flexDirection: "row",
+    flexGrow: 1,
+    justifyContent: "space-between",
+    paddingTop: "10px",
+  },
+  itemText: {
+    paddingRight: "35px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  publisher: {
+    marginRight: "50px",
+  },
+  avatar: {
+    alignSelf: "center",
+  },
+  published: {
+    flexGrow: 1,
+    alignSelf: "flex-end",
+  },
+}));
+
+const Article = (props) => {
   const classes = useStyles();
+  const { history } = props;
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClick = (pageURL) => {
+    history.push(pageURL);
+    setAnchorEl(null);
+  };
+
+  const handleButtonClick = (pageURL) => {
+    history.push(pageURL);
+  };
+
   return (
     <div className={classes.root}>
-      {article && (
-        <ListItem className={classes.card} id={article._id}>
-          <ListItemAvatar>
-            <Avatar>
-              <ImageIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary={article.title} secondary={article.published_date} />
-          <ListItemText secondary={article.byline} />
+      {props.article && (
+        <ListItem button id={props.article._id} onClick={() => handleMenuClick("details")}>
+          <div className={classes.grid}>
+            <ListItemAvatar className={classes.avatar}>
+              <Avatar variant="circle" className={classes.grey} alt={`Avatar n°{article._id}`}></Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              className={classes.itemText}
+              primary={props.article.title}
+              secondary={
+                <React.Fragment>
+                  <div className={classes.secondaryWrapper}>
+                    <Typography component="span" variant="body2" className={classes.publisher} color="textSecondary">
+                      {props.article.byline}
+                    </Typography>
+                    <div className={classes.dateWrapper}>
+                      <EventIcon fontSize="inherit" className={classes.dateIcon} />
+                      <Typography component="span" variant="body2" color="textSecondary" className={classes.dateText}>
+                        {props.article.published_date}
+                      </Typography>
+                    </div>
+                  </div>
+                </React.Fragment>
+              }
+            />
+            <ListItemSecondaryAction>
+              <IconButton edge="end" aria-label="comments">
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </div>
         </ListItem>
-        // <CardContent>
-        //   <Typography color="primary" variant="h6">
-        //     <a href={article.web_url} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
-        //       {article.title}
-        //     </a>
-        //   </Typography>
-        //   <Typography color="textSecondary" variant="subtitle2">
-        //     {article.byline.original}
-        //   </Typography>
-        //   <Typography variant="body2" component="p">
-        //     {article.snippet}
-        //   </Typography>
-        // </CardContent>
       )}
     </div>
   );
@@ -59,4 +127,4 @@ Article.propTypes = {
   article: PropTypes.object.isRequired,
 };
 
-export default Article;
+export default withRouter(Article);

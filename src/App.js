@@ -3,17 +3,16 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Typography } from "@material-ui/core";
-import Home from "./components/pages/Home";
-import Profile from "./components/pages/Profile";
-import About from "./components/pages/About";
-import Settings from "./components/pages/Settings";
-import Details from "./components/pages/Details";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+import About from "./pages/About";
+import Settings from "./pages/Settings";
+import Details from "./components/Details";
 import Articles from "./components/Articles";
 // Components
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import "./App.css";
-
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -47,7 +46,7 @@ const styles = makeStyles({
     marginTop: "5rem",
   },
   littleSpace: {
-    marginTop: "2.5rem",
+    marginTop: "0.5rem",
   },
   grid: {
     display: "flex",
@@ -70,12 +69,9 @@ function App() {
   useEffect(() => {
     const getArticles = async () => {
       setLoading(true);
-      const res = await axios.get(` https://api.nytimes.com/svc/mostpopular/v2/emailed/7.json?api-key=3QSkActGjOVF0qFk5V3SMQAn1cyTQuSR`);
-      // const res = await axios.get(` https://api.nytimes.com/svc/mostpopular/v2/emailed/7.json?api-key=' = ${process.env.REACT_APP_KEY}`);
-
+      const res = await axios.get(` https://api.nytimes.com/svc/mostpopular/v2/viewed/7.json?api-key=${process.env.REACT_APP_KEY}`);
       console.log(res);
       setArticles(res.data.results);
-
       setLoading(false);
     };
     getArticles();
@@ -85,16 +81,16 @@ function App() {
     <div className="App">
       <ThemeProvider theme={theme}>
         <NavBar />
-        <div className={classes.bigSpace}>
+        <div className={classes.littleSpace}>
           <Switch>
             <Route exact from="/" render={(props) => <Home loading={loading} articles={articles} />} />
             <Route exact path="/Profile" render={(props) => <Profile {...props} />} />
             <Route exact path="/about" render={(props) => <About {...props} />} />
             <Route exact path="/settings" render={(props) => <Settings {...props} />} />
-            <Route exact path="/articles" render={(props) => <Articles {...props} />} />
+            <Route exact path="/details" render={(props) => <Details />} />
           </Switch>
         </div>
-        <div className={`${classes.grid} ${classes.bigSpace} ${classes.footer}`}>
+        <div className={`${classes.grid} ${classes.littleSpace} ${classes.footer}`}>
           <Footer />
         </div>
       </ThemeProvider>
