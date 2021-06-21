@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -11,7 +10,8 @@ import { grey } from "@material-ui/core/colors";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import EventIcon from "@material-ui/icons/Event";
 import { makeStyles } from "@material-ui/core/styles";
-import { withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "250px",
   },
   dateIcon: {
-    alignSelf: "center",
+    alignSelf: "cenzter",
     flexGrow: "1",
     marginRight: "5px",
   },
@@ -69,42 +69,37 @@ const useStyles = makeStyles((theme) => ({
 
 const Article = (props) => {
   const classes = useStyles();
-  const { history } = props;
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  let history = useHistory();
+  const { article } = props;
 
-  const handleMenuClick = (pageURL) => {
-    history.push(pageURL);
-    setAnchorEl(null);
-  };
-
-  const handleButtonClick = (pageURL) => {
-    history.push(pageURL);
+  const ListItemClickHandle = () => {
+    history.push({
+      pathname: `/detail/${article._id}`,
+      state: { article: article },
+    });
   };
 
   return (
     <div className={classes.root}>
-      {props.article && (
-        <ListItem button id={props.article._id} onClick={() => handleMenuClick("details")}>
+      {article && (
+        <ListItem button id={article._id} key="{article}" onClick={ListItemClickHandle}>
           <div className={classes.grid}>
             <ListItemAvatar className={classes.avatar}>
               <Avatar variant="circle" className={classes.grey} alt={`Avatar n°{article._id}`}></Avatar>
             </ListItemAvatar>
             <ListItemText
               className={classes.itemText}
-              primary={props.article.title}
+              primary={article.title}
               secondary={
                 <React.Fragment>
                   <div className={classes.secondaryWrapper}>
                     <Typography component="span" variant="body2" className={classes.publisher} color="textSecondary">
-                      {props.article.byline}
+                      {article.byline}
                     </Typography>
                     <div className={classes.dateWrapper}>
                       <EventIcon fontSize="inherit" className={classes.dateIcon} />
                       <Typography component="span" variant="body2" color="textSecondary" className={classes.dateText}>
-                        {props.article.published_date}
+                        {article.published_date}
                       </Typography>
                     </div>
                   </div>
@@ -112,9 +107,11 @@ const Article = (props) => {
               }
             />
             <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="comments">
-                <ChevronRightIcon />
-              </IconButton>
+              <Link to={{ pathname: `/detail/${article._id}`, state: { article: article } }}>
+                <IconButton edge="end" aria-label="comments">
+                  <ChevronRightIcon />
+                </IconButton>
+              </Link>
             </ListItemSecondaryAction>
           </div>
         </ListItem>
@@ -123,8 +120,4 @@ const Article = (props) => {
   );
 };
 
-Article.propTypes = {
-  article: PropTypes.object.isRequired,
-};
-
-export default withRouter(Article);
+export default Article;

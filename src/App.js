@@ -2,18 +2,32 @@ import { createMuiTheme, ThemeProvider, makeStyles } from "@material-ui/core/sty
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
-import { Typography } from "@material-ui/core";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
 import Settings from "./pages/Settings";
-import Details from "./components/Details";
-import Articles from "./components/Articles";
+import ArticleDetail from "./components/ArticleDetail";
 // Components
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import "./App.css";
 const theme = createMuiTheme({
+  props: {
+    MuiTypography: {
+      variantMapping: {
+        h1: "h2",
+        h2: "h2",
+        h3: "h2",
+        h4: "h2",
+        h5: "h2",
+        h6: "h2",
+        subtitle1: "h2",
+        subtitle2: "h2",
+        body1: "span",
+        body2: "span",
+      },
+    },
+  },
   palette: {
     primary: {
       main: "#1de9b6",
@@ -37,26 +51,9 @@ const theme = createMuiTheme({
 });
 
 const styles = makeStyles({
-  wrapper: {
-    width: "65%",
-    margin: "auto",
-    textAlign: "center",
-  },
-  bigSpace: {
-    marginTop: "5rem",
-  },
   littleSpace: {
     marginTop: "0.5rem",
-  },
-  grid: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexWrap: "wrap",
-  },
-
-  footer: {
-    backgroundColor: "#d1d1d1",
+    marginBottom: "0.5rem",
   },
 });
 
@@ -87,11 +84,9 @@ function App() {
             <Route exact path="/Profile" render={(props) => <Profile {...props} />} />
             <Route exact path="/about" render={(props) => <About {...props} />} />
             <Route exact path="/settings" render={(props) => <Settings {...props} />} />
-            <Route exact path="/details" render={(props) => <Details />} />
+            <Route exact path="/detail/:id" component={ArticleDetail} />
           </Switch>
-        </div>
-        <div className={`${classes.grid} ${classes.littleSpace} ${classes.footer}`}>
-          <Footer />
+          {/* <Footer /> */}
         </div>
       </ThemeProvider>
     </div>

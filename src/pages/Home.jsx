@@ -1,10 +1,9 @@
 import React from 'react'
-import Articles from '../components/Articles';
-import axios from 'axios';
+import ArticleList from '../components/ArticleList';
 const Home = (props) => {
   return (
     <div>
-      <Articles loading={props.loading} articles={props.articles} />
+      <ArticleList loading={props.loading} articles={props.articles} />
     </div >
   )
 }

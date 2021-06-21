@@ -3,17 +3,13 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import Button from "@material-ui/core/Button";
 import SearchIcon from "@material-ui/icons/Search";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { withRouter } from "react-router-dom";
-
-const drawerWidth = 240;
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -42,8 +38,6 @@ const NavBar = (props) => {
   const classes = styles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,22 +48,28 @@ const NavBar = (props) => {
     setAnchorEl(null);
   };
 
-  const handleButtonClick = (pageURL) => {
-    history.push(pageURL);
-  };
-
   const menuItems = [
-    {
-      menuTitle: "Profile",
-      pageURL: "/profile",
-    },
-    {
-      menuTitle: "Settings",
-      pageURL: "/settings",
-    },
     {
       menuTitle: "About",
       pageURL: "/about",
+      key: 1,
+    },
+    {
+      menuTitle: "Profile",
+      pageURL: "/profile",
+      key: 2,
+    },
+
+    {
+      menuTitle: "Settings",
+      pageURL: "/settings",
+      key: 3,
+    },
+
+    {
+      menuTitle: "Logout",
+      pageURL: "/",
+      key: 4,
     },
   ];
   return (
@@ -80,7 +80,7 @@ const NavBar = (props) => {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h5">
-            NY Times Most Popular
+            New York Times
           </Typography>
           <IconButton aria-label="search" color="inherit">
             <SearchIcon />
@@ -105,8 +105,12 @@ const NavBar = (props) => {
             className={classes.menu}
           >
             {menuItems.map((menuItem) => {
-              const { menuTitle, pageURL } = menuItem;
-              return <MenuItem onClick={() => handleMenuClick(pageURL)}>{menuTitle}</MenuItem>;
+              const { menuTitle, pageURL, key } = menuItem;
+              return (
+                <MenuItem key={key} onClick={() => handleMenuClick(pageURL)}>
+                  {menuTitle}
+                </MenuItem>
+              );
             })}
           </Menu>
         </Toolbar>
