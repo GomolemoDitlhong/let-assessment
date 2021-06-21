@@ -38,9 +38,9 @@ const theme = createMuiTheme({
   },
   typography: {
     fontFamily: ["Roboto"],
-    h4: {
+    h1: {
       fontWeight: 600,
-      fontSize: 28,
+      fontSize: 68,
       lineHeight: "2rem",
     },
     h5: {
