@@ -1,10 +1,11 @@
-import { createMuiTheme, ThemeProvider, makeStyles } from "@material-ui/core/styles";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import "./App.css";
 // Components
 import ArticleDetail from "./components/ArticleDetail";
 import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 
 import ArticlePage from "./components/ArticlePage";
 const theme = createMuiTheme({
@@ -27,7 +28,6 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       main: "#1de9b6",
-      light: "#ffffff",
     },
     secondary: {
       main: "#c7d8ed",
@@ -50,21 +50,12 @@ const theme = createMuiTheme({
   },
 });
 
-const styles = makeStyles({
-  littleSpace: {
-    marginTop: "4rem",
-    marginBottom: "0.5rem",
-  },
-});
-
 function App() {
-  const classes = styles();
-
   return (
-    <div className="App">
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <div className="App">
         <NavBar />
-        <div className={classes.littleSpace}>
+        <div className="wrapper">
           <Switch>
             <Route exact path="/" render={(props) => <ArticlePage time="7" {...props} />} />
             <Route exact from="/month" render={(props) => <ArticlePage time="30" {...props} />} />
@@ -78,9 +69,10 @@ function App() {
 
             <Route exact path="/detail" component={ArticleDetail} />
           </Switch>
+          <Footer />
         </div>
-      </ThemeProvider>
-    </div>
+      </div>
+    </ThemeProvider>
   );
 }
 
