@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { Button } from "@material-ui/core";
-import { ArrowLeft } from "@material-ui/icons";
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -17,6 +16,7 @@ const styles = makeStyles((theme) => ({
   },
   section: {
     display: "flex",
+    marginTop: "10px",
     marginBottom: "20px",
   },
   title: {

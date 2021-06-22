@@ -61,6 +61,11 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     alignSelf: "center",
   },
+  chevron: {
+    "&:hover": {
+      backgroundColor: theme.primary,
+    },
+  },
   published: {
     flexGrow: 1,
     alignSelf: "flex-end",
@@ -74,7 +79,7 @@ const Article = (props) => {
 
   const ListItemClickHandle = () => {
     history.push({
-      pathname: `/detail/${article._id}`,
+      pathname: `/detail`,
       state: { article: article },
     });
   };
@@ -106,8 +111,8 @@ const Article = (props) => {
                 </React.Fragment>
               }
             />
-            <ListItemSecondaryAction>
-              <Link to={{ pathname: `/detail/${article._id}`, state: { article: article } }}>
+            <ListItemSecondaryAction className={classes.chevron}>
+              <Link to={{ pathname: `/detai`, state: { article: article } }}>
                 <IconButton edge="end" aria-label="comments">
                   <ChevronRightIcon />
                 </IconButton>

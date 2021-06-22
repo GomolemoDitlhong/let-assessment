@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core";
 
 const styles = makeStyles({
   loaderWrapper: {
-    marginTop: "3rem",
+    marginTop: "5rem",
     marginBottom: "3rem",
   },
 });

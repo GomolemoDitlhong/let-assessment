@@ -1,35 +1,98 @@
 import React from "react";
+import clsx from "clsx";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import MenuIcon from "@material-ui/icons/Menu";
+import List from "@material-ui/core/List";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ListItem from "@material-ui/core/ListItem";
 import SearchIcon from "@material-ui/icons/Search";
+import ListItemText from "@material-ui/core/ListItemText";
 import { withRouter } from "react-router-dom";
+
+const drawerWidth = 240;
 
 const styles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    display: "flex",
+    color: "white",
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
+  appBar: {
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  hide: {
+    display: "none",
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerHeader: {
+    display: "flex",
+    alignItems: "center",
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: "space-between",
+  },
+  toolbar: {
+    alignItems: "flex-center",
+    display: "flex",
+    color: theme.palette.primary.light,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
+  },
+  menuHeading: {
+    padding: "10px",
   },
   title: {
     flexGrow: 1,
+    color: "#ffffff",
   },
-  menu: {
-    minHeight: 460,
+  white: {
+    color: "#ffffff",
   },
-  toolbar: {
-    color: "white",
-    minHeight: 60,
-    alignItems: "flex-center",
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+  contentShift: {
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    color: "#ffffff",
   },
 }));
 
@@ -37,7 +100,16 @@ const NavBar = (props) => {
   const { history } = props;
   const classes = styles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const openDropDown = Boolean(anchorEl);
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -47,6 +119,21 @@ const NavBar = (props) => {
     history.push(pageURL);
     setAnchorEl(null);
   };
+
+  const sideMenuItems = [
+    {
+      menuTitle: "Today",
+      pageURL: "/today",
+    },
+    {
+      menuTitle: "This Week",
+      pageURL: "/",
+    },
+    {
+      menuTitle: "This Month",
+      pageURL: "/month",
+    },
+  ];
 
   const menuItems = [
     {
@@ -68,24 +155,37 @@ const NavBar = (props) => {
 
     {
       menuTitle: "Logout",
-      pageURL: "/",
+      pageURL: "/logout",
       key: 4,
     },
   ];
+
   return (
     <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar className={classes.toolbar}>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="open drawer">
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, open && classes.hide)}
+          >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h5">
-            New York Times
+          <Typography variant="h6" className={classes.title} noWrap>
+            NY Times Most Popular
           </Typography>
-          <IconButton aria-label="search" color="inherit">
-            <SearchIcon />
+          <IconButton aria-label="search">
+            <SearchIcon className={classes.white} />
           </IconButton>
-          <IconButton edge="end" color="inherit" aria-label="display more actions" onClick={handleMenu}>
+          <IconButton className={classes.white} edge="end" aria-label="display more actions" onClick={handleMenu}>
             <MoreIcon />
           </IconButton>
           <Menu
@@ -100,7 +200,7 @@ const NavBar = (props) => {
               vertical: "top",
               horizontal: "right",
             }}
-            open={open}
+            open={openDropDown}
             onClose={() => setAnchorEl(null)}
             className={classes.menu}
           >
@@ -115,6 +215,30 @@ const NavBar = (props) => {
           </Menu>
         </Toolbar>
       </AppBar>
+      <Drawer
+        className={classes.drawer}
+        variant="persistent"
+        anchor="left"
+        open={open}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <div className={classes.drawerHeader}>
+          <Typography className={classes.menuHeading}>Most Popular</Typography>
+          <IconButton onClick={handleDrawerClose}>{theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}</IconButton>
+        </div>
+        <Divider />
+
+        <List>
+          {sideMenuItems.map((page, index) => (
+            <ListItem button key={index} onClick={() => handleMenuClick(page.pageURL)}>
+              <ListItemText primary={page.menuTitle} />
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+      </Drawer>
     </div>
   );
 };

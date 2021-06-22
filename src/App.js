@@ -1,16 +1,12 @@
 import { createMuiTheme, ThemeProvider, makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Home from "./pages/Home";
-import Profile from "./pages/Profile";
-import About from "./pages/About";
-import Settings from "./pages/Settings";
-import ArticleDetail from "./components/ArticleDetail";
-// Components
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
 import "./App.css";
+// Components
+import ArticleDetail from "./components/ArticleDetail";
+import NavBar from "./components/NavBar";
+
+import ArticlePage from "./components/ArticlePage";
 const theme = createMuiTheme({
   props: {
     MuiTypography: {
@@ -31,9 +27,13 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       main: "#1de9b6",
+      light: "#ffffff",
     },
     secondary: {
       main: "#c7d8ed",
+    },
+    white: {
+      main: "#ffffff",
     },
   },
   typography: {
@@ -52,7 +52,7 @@ const theme = createMuiTheme({
 
 const styles = makeStyles({
   littleSpace: {
-    marginTop: "0.5rem",
+    marginTop: "4rem",
     marginBottom: "0.5rem",
   },
 });
@@ -60,33 +60,24 @@ const styles = makeStyles({
 function App() {
   const classes = styles();
 
-  const [loading, setLoading] = useState(false);
-  const [articles, setArticles] = useState([]);
-
-  useEffect(() => {
-    const getArticles = async () => {
-      setLoading(true);
-      const res = await axios.get(` https://api.nytimes.com/svc/mostpopular/v2/viewed/7.json?api-key=${process.env.REACT_APP_KEY}`);
-      console.log(res);
-      setArticles(res.data.results);
-      setLoading(false);
-    };
-    getArticles();
-  }, []);
-
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
         <NavBar />
         <div className={classes.littleSpace}>
           <Switch>
-            <Route exact from="/" render={(props) => <Home loading={loading} articles={articles} />} />
-            <Route exact path="/Profile" render={(props) => <Profile {...props} />} />
-            <Route exact path="/about" render={(props) => <About {...props} />} />
-            <Route exact path="/settings" render={(props) => <Settings {...props} />} />
-            <Route exact path="/detail/:id" component={ArticleDetail} />
+            <Route exact path="/" render={(props) => <ArticlePage time="7" {...props} />} />
+            <Route exact from="/month" render={(props) => <ArticlePage time="30" {...props} />} />
+            <Route exact from="/today" render={(props) => <ArticlePage time="1" {...props} />} />
+
+            {/* Example routes */}
+            <Route exact from="/about" render={() => console.log("About Page")} />
+            <Route exact from="/logout" render={() => console.log("You are logged out")} />
+            <Route exact from="/profile" render={() => console.log("Profile Page")} />
+            <Route exact from="/settings" render={() => console.log("Settings Page")} />
+
+            <Route exact path="/detail" component={ArticleDetail} />
           </Switch>
-          {/* <Footer /> */}
         </div>
       </ThemeProvider>
     </div>
