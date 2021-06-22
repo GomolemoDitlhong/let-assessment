@@ -52,8 +52,8 @@ const theme = createMuiTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <div className="App">
+    <div className="App">
+      <ThemeProvider theme={theme}>
         <NavBar />
         <div className="wrapper">
           <Switch>
@@ -71,8 +71,8 @@ function App() {
           </Switch>
           <Footer />
         </div>
-      </div>
-    </ThemeProvider>
+      </ThemeProvider>
+    </div>
   );
 }
 
