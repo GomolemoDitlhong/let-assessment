@@ -1,27 +1,25 @@
 import React from "react";
 import Article from "./Article.js";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import List from "@material-ui/core/List";
 import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core";
 
-export default function ArticleList({ loading, articles }) {
+// Styles
+const styles = makeStyles((theme) => ({
+  listWrapper: {
+    marginTop: "3rem",
+    marginBottom: "0.5rem",
+  },
+}));
+export default function ArticleList({ articles }) {
+  const classes = styles();
   return (
-    <div className="grid">
-      <>
-        {loading ? (
-          <div className="progressWrapper">
-            <CircularProgress />
-          </div>
-        ) : (
-          <div className="listWrapper">
-            <List>
-              {articles.map((article) => (
-                <Article key={article.id} article={article} />
-              ))}
-            </List>
-          </div>
-        )}
-      </>
+    <div className={classes.listWrapper}>
+      <List>
+        {articles.map((article) => (
+          <Article key={article.id} article={article} />
+        ))}
+      </List>
     </div>
   );
 }

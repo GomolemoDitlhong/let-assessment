@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { Button } from "@material-ui/core";
+import { ChevronLeft } from "@material-ui/icons";
+
+import { IconButton } from "@material-ui/core";
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -11,6 +14,8 @@ const styles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   wrapper: {
+    marginTop: "50px",
+
     padding: "20px",
     align: "left",
   },
@@ -26,6 +31,20 @@ const styles = makeStyles((theme) => ({
   littleSpace: {
     marginBottom: "1rem",
   },
+  backButton: {
+    color: "#4b5563",
+    "&:Hover": {
+      backgroundColor: "#3e3e40",
+      color: "#1de9b6",
+    },
+  },
+  chevronLeft: {
+    color: "#4b5563",
+    backgroundColor: "transparent",
+    "&:Hover": {
+      backgroundColor: "transparent",
+    },
+  },
 }));
 
 const ArticleDetail = (props) => {
@@ -34,11 +53,14 @@ const ArticleDetail = (props) => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.section}>
-        <Button variant="contained" color="primary">
-          <Link to="/" style={{ textDecoration: "none" }}>
-            Back to Articles
-          </Link>
-        </Button>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <Button className={classes.backButton} variant="contained" color="primary">
+            <IconButton edge="start" aria-label="comments">
+              <ChevronLeft className={classes.chevronLeft} />
+            </IconButton>
+            Back
+          </Button>
+        </Link>
       </div>
       <Typography className={`${classes.root} ${classes.title}`}>{title}</Typography>
       <Typography component="h4" varient="h4" className={`${classes.root} ${classes.littleSpace}`}>

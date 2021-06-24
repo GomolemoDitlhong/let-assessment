@@ -47,12 +47,20 @@ const styles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+    color: "#FFFFFF",
   },
   drawerPaper: {
+    // backgroundColor: "#e6e6e6",
+    backgroundColor: "#1f272a",
     width: drawerWidth,
+    paddingTop: 0,
+  },
+  menuLink: {
+    color: "#FFFFFF",
   },
   drawerHeader: {
     display: "flex",
+    backgroundColor: "#019587",
     alignItems: "center",
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
@@ -62,8 +70,13 @@ const styles = makeStyles((theme) => ({
   toolbar: {
     alignItems: "flex-center",
     display: "flex",
-    color: theme.palette.primary.light,
+    color: "#FFFFFF",
   },
+
+  menu: {
+    color: "#FFFFFF",
+  },
+
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
@@ -75,13 +88,23 @@ const styles = makeStyles((theme) => ({
   },
   menuHeading: {
     padding: "10px",
+    color: "#FFFFFF",
   },
   title: {
     flexGrow: 1,
-    color: "#ffffff",
+    color: "#FFFFFF",
+    textAlign: "center",
   },
   white: {
     color: "#ffffff",
+  },
+  listItemText: {
+    color: "#4b5563",
+    "&:Hover": {
+      backgroundColor: "#161617",
+      color: "#ffffff",
+      borderLeft: "4px solid #1de9b6",
+    },
   },
   contentShift: {
     transition: theme.transitions.create("margin", {
@@ -92,7 +115,7 @@ const styles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    color: "#ffffff",
+    color: "#FFFFFF",
   },
 }));
 
@@ -207,7 +230,7 @@ const NavBar = (props) => {
             {menuItems.map((menuItem) => {
               const { menuTitle, pageURL, key } = menuItem;
               return (
-                <MenuItem key={key} onClick={() => handleMenuClick(pageURL)}>
+                <MenuItem className={classes.menuLink} key={key} onClick={() => handleMenuClick(pageURL)}>
                   {menuTitle}
                 </MenuItem>
               );
@@ -228,16 +251,16 @@ const NavBar = (props) => {
           <Typography className={classes.menuHeading}>Most Popular</Typography>
           <IconButton onClick={handleDrawerClose}>{theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}</IconButton>
         </div>
-        <Divider />
+        <Divider light />
 
         <List>
           {sideMenuItems.map((page, index) => (
-            <ListItem button key={index} onClick={() => handleMenuClick(page.pageURL)}>
+            <ListItem button key={index} onClick={() => handleMenuClick(page.pageURL)} className={classes.listItemText}>
               <ListItemText primary={page.menuTitle} />
             </ListItem>
           ))}
         </List>
-        <Divider />
+        <Divider light />
       </Drawer>
     </div>
   );
